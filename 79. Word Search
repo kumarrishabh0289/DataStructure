@@ -1,0 +1,28 @@
+class Solution:
+    
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        if len(word) == 0:
+            return False
+        
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if word[0] == board[i][j]:
+                    y = dfs(i,j,board,word,0)
+                    if y is True:
+                        return True
+                    
+
+                    
+                    
+
+def dfs(i,j,board,word,index):
+    if i < 0 or j < 0 or i >= len(board) or j >= len(board[0]) or index >= len(word) or word[index]!=board[i][j]:
+        return False
+    if index == len(word) - 1:
+        return True
+    temp = board[i][j]
+    board[i][j] ='#'
+    ret = dfs(i-1,j,board,word,index+1) or dfs(i+1,j,board,word,index+1) or dfs(i,j-1,board,word,index+1) or dfs(i,j+1,board,word,index+1)
+    board[i][j] = temp
+    
+    return ret
