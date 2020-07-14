@@ -1,0 +1,62 @@
+class TrieNode:
+    def __init__(self):
+        self.child = [None]*26
+        self.isWord = False
+
+def addWord(root, word):
+    for i in range(len(word)):
+        if root.child[ord(word[i])-ord('a')] is None:
+            root.child[ord(word[i])-ord('a')] = TrieNode()
+            root = root.child[ord(word[i])-ord('a')]
+        else:
+            root = root.child[ord(word[i])-ord('a')]
+    root.isWord = True
+
+# def SearchWord(root,word):
+#     for i in range(len(word)):
+#         if root.children[ord(word[i])-ord('a')] is None: 
+#             return False
+#         else:
+#             root = root.children[ord(word[i])-ord('a')]
+#     return root.isWord
+    
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        if len(board) == 0:
+            return []
+        res = set()
+        
+        trie = TrieNode()
+        for word in words:
+            addWord(trie,word)
+        
+        
+        flag = [[False for x in range(len(board[0]))] for y in range(len(board))] 
+        
+       
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                dfs(i,j,board,trie,"",res,flag)    
+                    
+                            
+        return list(res)
+       
+def dfs(i,j,board,trie,word,res,flag):
+    
+    if i <0 or j<0 or i>=len(board) or j>=len(board[0]) or flag[i][j] or trie.child[ord(board[i][j])-ord('a')] is None:
+        return
+    flag[i][j] = True
+    trie = trie.child[ord(board[i][j])-ord('a')]
+    
+
+    if trie.isWord:
+        res.add(word + board[i][j])
+        
+    dfs(i-1,j,board,trie,word+board[i][j],res,flag)
+    dfs(i+1,j,board,trie,word+board[i][j],res,flag) 
+    dfs(i,j-1,board,trie,word+board[i][j],res,flag) 
+    dfs(i,j+1,board,trie,word+board[i][j],res,flag)
+    
+    flag[i][j] = False
+    
+    
