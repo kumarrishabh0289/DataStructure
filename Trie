@@ -1,0 +1,25 @@
+# Simple Implementation of Trie
+# Added functionality to add new words and
+# How to search word in existing Trie.
+class TrieNode:
+    def __init__(self):
+        self.children  = [None]*26
+        self.isWord  = False
+
+def AddWord(root,word):
+    for i in range(len(word)):
+        if root.children[ord(word[i])-ord('a')] is None:
+            root.children[ord(word[i])-ord('a')] = TrieNode()
+            root = root.children[ord(word[i])-ord('a')]
+        else:
+            root = root.children[ord(word[i])-ord('a')]
+    root.isWord = True
+
+def SearchWord(root,word):
+    for i in range(len(word)):
+        if root.children[ord(word[i])-ord('a')] is None: 
+            return False
+        else:
+            root = root.children[ord(word[i])-ord('a')]
+    return root.isWord
+    
